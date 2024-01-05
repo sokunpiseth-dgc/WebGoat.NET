@@ -12,8 +12,3 @@ jobs:
         run: dotnet tool list --global
       - name: Run Security Code Scan
         run: security-scan
-      - name: Publish Artifact Security Code Scan
-        uses: PublishBuildArtifacts@1
-        with:
-          pathToPublish: 'sast-results.sarif'
-          artifactName: 'CodeAnalysisLogs'
