@@ -11,4 +11,4 @@ jobs:
       - name: List Global Tools
         run: dotnet tool list --global
       - name: Run Security Code Scan
-        run: security-scan
+        run: security-scan FullDotNetWebApp.sln 
