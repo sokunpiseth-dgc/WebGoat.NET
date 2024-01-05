@@ -1,23 +1,19 @@
-name: Security Code Scan
-
-on: [push]
-
+name: Security Scan Workflow
+on: [push, pull_request]
 jobs:
-  SCS:
+  security-scan:
     runs-on: ubuntu-latest
-    steps:     
-      - uses: actions/checkout@v2
-      
-      - name: Set up projects
-        uses: security-code-scan/security-code-scan-add-action@main
-
-      - name: Build
-        run: |
-          dotnet restore
-          dotnet build
-        
-      - name: Convert sarif for uploading to GitHub
-        uses: security-code-scan/security-code-scan-results-action@main
-        
-      - name: Upload sarif	
-        uses: github/codeql-action/upload-sarif@v1
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Security Code Scan
+        run: dotnet tool install --global security-scan
+      - name: List Global Tools
+        run: dotnet tool list --global
+      - name: Run Security Code Scan
+        run: security-scan
+      - name: Publish Artifact: Security Code Scan
+        uses: PublishBuildArtifacts@1
+        with:
+          pathToPublish: 'sast-results.sarif'
+          artifactName: 'CodeAnalysisLogs'
